@@ -2,9 +2,11 @@ package com.example.myshoppinglist.domain.useCases
 
 import com.example.myshoppinglist.domain.ShopItem
 
-class GetShopListUseCase {
+class GetShopListUseCase(
+    private val shopListRepository: ShopListRepository,
+) {
 
     fun getShopList(): List<ShopItem> {
-        TODO()
+        return shopListRepository.getShopList()
     }
 }

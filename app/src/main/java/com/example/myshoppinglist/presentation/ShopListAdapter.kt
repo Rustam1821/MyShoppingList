@@ -20,6 +20,9 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
 
     var count = 0
 
+    var onShopItemLongClick: ((item: ShopItem) -> Unit)? = null
+    var onShopItemClick: ((item: ShopItem) -> Unit)? = null
+
     class ShopItemViewHolder(val view: View) : ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val tvCount: TextView = view.findViewById(R.id.tv_count)
@@ -42,11 +45,18 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
 
     override fun onBindViewHolder(viewHolder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
-        viewHolder.tvName.text = shopItem.name
-        viewHolder.tvCount.text = shopItem.count.toString()
-        viewHolder.view.setOnLongClickListener {
-            Log.d("--->", "item # $position was clicked")
-            true
+        with(viewHolder) {
+            tvName.text = shopItem.name
+            tvCount.text = shopItem.count.toString()
+
+            view.setOnClickListener {
+                onShopItemClick?.invoke(shopItem)
+            }
+
+            view.setOnLongClickListener { _ ->
+                onShopItemLongClick?.invoke(shopItem)
+                true
+            }
         }
     }
 
@@ -59,6 +69,6 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         const val VIEW_TYPE_ENABLED = 100
         const val VIEW_TYPE_DISABLED = 200
 
-        const val MAX_POOL_SIZE = 10
+        const val MAX_POOL_SIZE = 20
     }
 }

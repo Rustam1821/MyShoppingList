@@ -1,5 +1,6 @@
 package com.example.myshoppinglist.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,13 +22,13 @@ class ShopItemViewModel : ViewModel() {
     val errorInputName: LiveData<Boolean> = _errorInputName
 
     private val _errorInputCount = MutableLiveData<Boolean>()
-    private val errorInputCount: LiveData<Boolean> = _errorInputCount
+    val errorInputCount: LiveData<Boolean> = _errorInputCount
 
     private val _shopItem = MutableLiveData<ShopItem>()
-    private val shopItem: LiveData<ShopItem> = _shopItem
+    val shopItem: LiveData<ShopItem> = _shopItem
 
     private val _shouldCloseScreen = MutableLiveData<Unit>()
-    private val shouldCloseScreen: LiveData<Unit> = _shouldCloseScreen
+    val shouldCloseScreen: LiveData<Unit> = _shouldCloseScreen
 
 
     fun getShopItem(shopItemId: Int) {
@@ -38,6 +39,7 @@ class ShopItemViewModel : ViewModel() {
     fun addShopItem(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
+        Log.d("--->", "name: $name, count: $count")
         val fieldsValid = validateInput(name, count)
         if (fieldsValid) {
             val shopItem = ShopItem(name = name, count = count, enabled = true)

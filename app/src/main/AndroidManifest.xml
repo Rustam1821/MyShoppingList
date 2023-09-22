@@ -15,6 +15,7 @@
 
         <activity
             android:name=".presentation.ShopItemActivity"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize" />
 
         <activity

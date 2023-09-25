@@ -3,6 +3,7 @@ package com.example.myshoppinglist.presentation
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class ShopItemFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("ShopItemFragment", "onCreate")
         parseParams()
     }
 
@@ -152,7 +154,7 @@ class ShopItemFragment : Fragment() {
         fun newInstanceEditItem(itemId: Int): ShopItemFragment {
             return ShopItemFragment().apply {
                 arguments = Bundle().apply {
-                    putString(SCREEN_MODE, MODE_ADD)
+                    putString(SCREEN_MODE, MODE_EDIT)
                     putInt(SHOP_ITEM_ID, itemId)
                 }
             }

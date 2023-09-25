@@ -1,6 +1,5 @@
 package com.example.myshoppinglist.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,7 +38,6 @@ class ShopItemViewModel : ViewModel() {
     fun addShopItem(inputName: String?, inputCount: String?) {
         val name = parseName(inputName)
         val count = parseCount(inputCount)
-        Log.d("--->", "name: $name, count: $count")
         val fieldsValid = validateInput(name, count)
         if (fieldsValid) {
             val shopItem = ShopItem(name = name, count = count, enabled = true)

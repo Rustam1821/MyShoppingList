@@ -2,6 +2,12 @@
 
 <layout>
 
+    <data>
+        <variable
+            name="shopItem"
+            type="com.example.myshoppinglist.domain.ShopItem" />
+    </data>
+
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -30,6 +36,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:text="@{shopItem.name}"
                 tools:text="Салфетки" />
 
             <TextView
@@ -38,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                android:text="@{String.valueOf(shopItem.count)}"
                 android:textStyle="bold"
                 tools:text="1" />
 

@@ -1,54 +1,37 @@
 package com.example.myshoppinglist.data
 
+import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.myshoppinglist.domain.ShopItem
 import com.example.myshoppinglist.domain.useCases.ShopListRepository
-import kotlin.random.Random
 
-object ShopListRepositoryImpl : ShopListRepository {
+class ShopListRepositoryImpl(
+    private val application: Application
+) : ShopListRepository {
 
-    private val shopList = sortedSetOf<ShopItem>(
-        { o1, o2 -> o1.id.compareTo(o2.id) }
-    )
-    private val shopListLD = MutableLiveData<List<ShopItem>>()
-    private var autoIncrementId = 0
-
-    init {
-        for (i in 0 until 20) {
-            val item = ShopItem("Name $i", i, Random.nextBoolean())
-            addShopItem(item)
-        }
-    }
+    private val shopListDao = AppDatabase.getInstance(application).shopListDao()
+    private val mapper = ShopListMapper()
 
     override fun addShopItem(item: ShopItem) {
-        if (item.id == ShopItem.UNDEFINED_ID) {
-            item.id = autoIncrementId++
-        }
-        shopList.add(item)
-        updateList()
+        val shopItemDbModel = mapper.mapEntityToDbModel(item)
+        shopListDao.addShopItem(shopItemDbModel)
     }
 
     override fun deleteShopItem(item: ShopItem) {
-        shopList.remove(item)
-        updateList()
+        shopListDao.deleteShopItem(item.id)
     }
 
     override fun editShopItem(item: ShopItem) {
-        val oldItem = getShopItem(item.id)
-        shopList.remove(oldItem)
         addShopItem(item)
     }
 
     override fun getShopList(): LiveData<List<ShopItem>> {
+        val list = shopListDao.getShopList()
         return shopListLD
     }
 
     override fun getShopItem(id: Int): ShopItem {
-        return shopList.find { it.id == id } ?: throw NullPointerException("Element with id $id not found")
-    }
-
-    private fun updateList() {
-        shopListLD.value = shopList.toList()
+        val dbModel = shopListDao.getShopItem(id)
+        return mapper.mapDbModelToEntity(dbModel)
     }
 }

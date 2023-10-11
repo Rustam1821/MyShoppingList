@@ -2,14 +2,12 @@ package com.example.myshoppinglist.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
 import com.example.myshoppinglist.domain.ShopItem
 import com.example.myshoppinglist.domain.useCases.ShopListRepository
 
 class ShopListRepositoryImpl(
-    private val application: Application
+    application: Application
 ) : ShopListRepository {
 
     private val shopListDao = AppDatabase.getInstance(application).shopListDao()

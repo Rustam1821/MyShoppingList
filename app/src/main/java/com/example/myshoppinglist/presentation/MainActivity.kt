@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedList
 
     override fun onEditingFinished() {
         Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 
 }

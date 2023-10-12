@@ -6,7 +6,7 @@ class EditShopItemUseCase(
     private val shopListRepository: ShopListRepository,
 ) {
 
-    fun editShopItem(item: ShopItem) {
+    suspend fun editShopItem(item: ShopItem) {
         shopListRepository.editShopItem(item)
     }
 }

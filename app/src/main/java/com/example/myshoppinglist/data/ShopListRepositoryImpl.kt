@@ -8,6 +8,13 @@ object ShopListRepositoryImpl : ShopListRepository {
     private val shopList = mutableListOf<ShopItem>()
     private var autoIncrementId = 0
 
+    init {
+        for (i in 0 until 10) {
+            val item = ShopItem("Name $i", i, true)
+            addShopItem(item)
+        }
+    }
+
     override fun addShopItem(item: ShopItem) {
         if (item.id == ShopItem.UNDEFINED_ID) {
             item.id = autoIncrementId++
@@ -22,7 +29,7 @@ object ShopListRepositoryImpl : ShopListRepository {
     override fun editShopItem(item: ShopItem) {
         val oldElement = getShopItem(item.id)
         shopList.remove(oldElement)
-        shopList.add(item)
+        addShopItem(item)
     }
 
     override fun getShopItem(itemId: Int): ShopItem {

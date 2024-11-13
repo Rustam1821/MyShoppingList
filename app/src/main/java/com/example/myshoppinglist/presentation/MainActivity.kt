@@ -1,8 +1,8 @@
 package com.example.myshoppinglist.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.myshoppinglist.R
 
@@ -18,6 +18,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopList.observe(this) {
             Log.d("MainActivityTest", it.toString())
         }
-        viewModel.getShopList()
     }
 }

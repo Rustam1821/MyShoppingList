@@ -1,9 +1,9 @@
 package com.example.myshoppinglist.domain
 
-class EditShopItemUseCase {
+class EditShopItemUseCase(private val shopListRepository: ShopListRepository) {
 
     fun editShopItem(item: ShopItem) {
-        TODO("Not yet implemented")
+        shopListRepository.editShopItem(item)
     }
 
 }

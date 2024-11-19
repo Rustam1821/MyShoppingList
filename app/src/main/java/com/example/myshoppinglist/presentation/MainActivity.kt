@@ -12,7 +12,7 @@ import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.MAX_POO
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_DISABLED
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_ENABLED
 
-class MainActivity() : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
@@ -23,7 +23,7 @@ class MainActivity() : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setupRecyclerView()
         viewModel.shopList.observe(this) {
-            shopListAdapter.shopList = it
+            shopListAdapter.submitList(it)
         }
     }
 
@@ -55,7 +55,7 @@ class MainActivity() : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val pos = viewHolder.adapterPosition
-                val item = shopListAdapter.shopList[pos]
+                val item = shopListAdapter.currentList[pos]
                 viewModel.deleteShopItem(item)
             }
 

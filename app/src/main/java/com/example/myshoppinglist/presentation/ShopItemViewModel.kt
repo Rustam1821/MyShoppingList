@@ -83,7 +83,7 @@ class ShopItemViewModel : ViewModel() {
             _errorInputName.value = true
             result = false
         } else if (count <= 0) {
-            //TODO: show error input cont
+            _errorCount.value = true
             result = false
         }
         return result

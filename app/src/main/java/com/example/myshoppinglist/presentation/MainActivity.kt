@@ -2,7 +2,6 @@ package com.example.myshoppinglist.presentation
 ////4.4 done: 3hours 27 minutes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -11,6 +10,7 @@ import com.example.myshoppinglist.R
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.MAX_POOL_SIZE
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_DISABLED
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_ENABLED
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +24,11 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         viewModel.shopList.observe(this) {
             shopListAdapter.submitList(it)
+        }
+        val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
+        buttonAddItem.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
         }
     }
 
@@ -66,7 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
-            Log.d("--->", "Item ${it.name} was clicked")
+            val intent = ShopItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
     }
 

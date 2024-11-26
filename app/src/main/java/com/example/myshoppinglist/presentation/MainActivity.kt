@@ -1,5 +1,5 @@
 package com.example.myshoppinglist.presentation
-////4.4 done: 3hours 27 minutes
+////6.2 done: 6hours 18 minutes
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

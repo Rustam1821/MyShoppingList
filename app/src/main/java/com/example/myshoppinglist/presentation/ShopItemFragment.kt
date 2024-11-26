@@ -1,8 +1,7 @@
 package com.example.myshoppinglist.presentation
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +38,7 @@ class ShopItemFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parseIntent()
+        parseParams()
         viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
         initViews(view)
         launchRightMode()
@@ -48,6 +47,7 @@ class ShopItemFragment(
     }
 
     private fun launchRightMode() {
+        Log.d("--->", "launchRightMode, $screenMode")
         when (screenMode) {
             MODE_EDIT -> launchEditMode()
             MODE_ADD -> launchAddMode()
@@ -83,7 +83,7 @@ class ShopItemFragment(
             tilCount.error = if (invalid) getString(R.string.error_input_count) else null
         }
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            parentFragmentManager.popBackStack()
+            activity?.onBackPressed()
         }
     }
 
@@ -104,7 +104,7 @@ class ShopItemFragment(
         }
     }
 
-    private fun parseIntent() {
+    private fun parseParams() {
         if (screenMode != MODE_EDIT && screenMode != MODE_ADD) {
             throw RuntimeException("Unknown screen mode $screenMode")
         }
@@ -130,17 +130,13 @@ class ShopItemFragment(
         private const val MODE_EDIT = "mode_edit"
         private const val MODE_UNKNOWN = ""
 
-        fun newIntentAddItem(context: Context): Intent {
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(EXTRA_MODE, MODE_ADD)
-            return intent
+        fun newInstanceAddItem(): Fragment {
+            return ShopItemFragment(MODE_ADD)
         }
 
-        fun newIntentEditItem(context: Context, itemId: Int): Intent {
-            val intent = Intent(context, ShopItemActivity::class.java)
-            intent.putExtra(EXTRA_MODE, MODE_EDIT)
-            intent.putExtra(EXTRA_SHOP_ITEM_ID, itemId)
-            return intent
+        fun newInstanceEditItem(itemId: Int): Fragment {
+            return ShopItemFragment(MODE_EDIT, itemId)
         }
+
     }
 }

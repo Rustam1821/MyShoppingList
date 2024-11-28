@@ -3,10 +3,13 @@ package com.example.myshoppinglist.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myshoppinglist.R
+import com.example.myshoppinglist.domain.ShopItem
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.MAX_POOL_SIZE
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_DISABLED
 import com.example.myshoppinglist.presentation.ShopListAdapter.Companion.VIEW_TYPE_ENABLED
@@ -16,19 +19,26 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
+    private var shopItemContainer: FragmentContainerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        shopItemContainer = findViewById(R.id.shop_item_container)
         setupRecyclerView()
         viewModel.shopList.observe(this) {
             shopListAdapter.submitList(it)
         }
         val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_shop_item)
         buttonAddItem.setOnClickListener {
-            val intent = ShopItemActivity.newIntentAddItem(this)
-            startActivity(intent)
+            if (isOnePaneMode()) {
+                val intent = ShopItemActivity.newIntentAddItem(this)
+                startActivity(intent)
+            } else {
+                val fragment = ShopItemFragment.newInstanceAddItem()
+                launchFragment(fragment)
+            }
         }
     }
 
@@ -71,8 +81,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.onShopItemClickListener = {
-            val intent = ShopItemActivity.newIntentEditItem(this, it.id)
+            handleClick(it)
+        }
+    }
+
+    private fun handleClick(shopItem: ShopItem) {
+        if (isOnePaneMode()) {
+            val intent = ShopItemActivity.newIntentEditItem(this, shopItem.id)
             startActivity(intent)
+        } else {
+            val fragment = ShopItemFragment.newInstanceEditItem(shopItem.id)
+            launchFragment(fragment)
         }
     }
 
@@ -80,5 +99,17 @@ class MainActivity : AppCompatActivity() {
         shopListAdapter.onShopItemLongClickListener = {
             viewModel.changeEnableState(it)
         }
+    }
+
+    private fun isOnePaneMode(): Boolean {
+        return shopItemContainer == null
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        supportFragmentManager.popBackStack()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.shop_item_container, fragment)
+            .addToBackStack(    null)
+            .commit()
     }
 }

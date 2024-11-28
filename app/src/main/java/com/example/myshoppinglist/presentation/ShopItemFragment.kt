@@ -29,6 +29,7 @@ class ShopItemFragment() : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("--->", "onCreate")
         parseParams()
     }
 
@@ -51,7 +52,6 @@ class ShopItemFragment() : Fragment() {
     }
 
     private fun launchRightMode() {
-        Log.d("--->", "launchRightMode, $screenMode")
         when (screenMode) {
             MODE_EDIT -> launchEditMode()
             MODE_ADD -> launchAddMode()

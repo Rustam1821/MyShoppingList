@@ -4,17 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myshoppinglist.R
+import com.example.myshoppinglist.databinding.ActivityShopItemBinding
 import com.example.myshoppinglist.domain.ShopItem
 
 class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
+
+    private lateinit var binding: ActivityShopItemBinding
 
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shop_item)
+        binding = ActivityShopItemBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         parseIntent()
         launchRightMode()
     }
@@ -26,7 +29,7 @@ class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinished
             else -> throw RuntimeException("Unknown screen mode $screenMode")
         }
         supportFragmentManager.beginTransaction()
-            .replace(R.id.shop_item_container, fragment)
+            .replace(binding.shopItemContainer.id, fragment)
             .addToBackStack(null)
             .commit()
     }

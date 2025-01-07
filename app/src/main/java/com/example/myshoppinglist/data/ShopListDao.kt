@@ -10,14 +10,14 @@ import androidx.room.Query
 interface ShopListDao {
 
     @Query("SELECT * FROM shop_items")
-    fun getShopList(): LiveData<List<ShopItemDbModel>>
+    fun getShopList(): LiveData<List<ShopItemDbModel>> // this method isn't suspend because it returns LiveData, which works on a separate thread by design.
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addShopItem(shopItemModel: ShopItemDbModel)
+    suspend fun addShopItem(shopItemModel: ShopItemDbModel)
 
     @Query("DELETE FROM shop_items WHERE id=:shopItemId")
-    fun deleteShopItem(shopItemId: Int)
+    suspend fun deleteShopItem(shopItemId: Int)
 
     @Query("SELECT * FROM shop_items WHERE id=:shopItemId LIMIT 1")
-    fun getShopItem(shopItemId: Int): ShopItemDbModel
+    suspend fun getShopItem(shopItemId: Int): ShopItemDbModel
 }

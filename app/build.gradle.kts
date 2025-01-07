@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -36,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    sourceSets["main"].java.srcDir("build/generated/ksp/debug/kotlin")
+    sourceSets["test"].java.srcDir("build/generated/ksp/test/kotlin")
+    sourceSets["androidTest"].java.srcDir("build/generated/ksp/androidTest/kotlin")
 }
 
 dependencies {
@@ -53,5 +57,5 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 }

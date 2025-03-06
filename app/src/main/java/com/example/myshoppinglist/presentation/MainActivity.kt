@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedList
             }
         }
         contentResolver.query(
-            Uri.parse("content://com.example.myshoppinglist/shop_list"),
+            Uri.parse("content://com.example.myshoppinglist/shop_list/9"),
             null,
             null,
             null,
